@@ -1,22 +1,20 @@
 import React, { Component } from 'react'
+import { Grid, Row, Col } from 'react-bootstrap'
+import axios from 'axios'
 
 class ImageUpload extends Component {
   constructor(props) {
-    super(props);
+    super(props)
+
     this.state = {
       file: '',
-      imagePreviewUrl: ''
-    };
-    this._handleImageChange = this._handleImageChange.bind(this);
-    this._handleSubmit = this._handleSubmit.bind(this);
+      imagePreviewUrl: '',
+      uploading: false
+    }
+
   }
 
-  _handleSubmit(e) {
-    e.preventDefault();
-    // TODO: do something with -> this.state.file
-  }
-
-  _handleImageChange(e) {
+  handleImageChange = (e) => {
     e.preventDefault();
 
     let reader = new FileReader();
@@ -25,30 +23,83 @@ class ImageUpload extends Component {
     reader.onloadend = () => {
       this.setState({
         file: file,
-        imagePreviewUrl: reader.result
+        fileName: file.name
       });
     }
 
     reader.readAsDataURL(file)
   }
 
+  // Component method
+  handleFileUpload = async (e) => {
+    e.preventDefault()
+    this.setState({  uploading: true })
+    
+    let data = new FormData();
+    data.append('file', this.state.file);
+    
+    const { data: { imageLink } } = await axios.post('/upload',data)      
+    this.setState({ 
+      imagePreviewUrl: imageLink,
+      uploading: false 
+    })
+  
+  }
+
   render() {
-    let { imagePreviewUrl } = this.state;
-    let $imagePreview = null;
-    if (imagePreviewUrl) {
-      $imagePreview = (<img src={imagePreviewUrl} />);
-    }
+    const { uploading, fileName, imagePreviewUrl } = this.state
 
     return (
-      <div>
-        <form onSubmit={this._handleSubmit}>
-          <input type="file" onChange={this._handleImageChange} />
-          <button type="submit" onClick={this._handleSubmit}>Upload Image</button>
-        </form>
-        {$imagePreview}
-      </div>
+      <Grid>
+        
+        <Row>
+          <Col md={6}>
+            <form onSubmit={ this.handleFileUpload }  className="panel panel-default">
+              <div className="panel-heading"><strong>Upload files</strong> <small> </small></div>
+              <div className="panel-body">
+                <div className="input-group image-preview">
+                  
+                  <input type="text" value={ fileName || '' } className="form-control image-preview-filename"/>
+                  {/* don't give a name === doesn't send on POST/GET */}
+                  <span className="input-group-btn">
+                    {/* image-preview-clear button */}
+                    <button type="button" className="btn btn-default image-preview-clear" style={{ display: 'none' }}>
+                      <span className="glyphicon glyphicon-remove" /> Clear </button>
+                    {/* image-preview-input */}
+                    <div className="btn btn-default image-preview-input">
+                      <span className="glyphicon glyphicon-folder-open" />
+                      <span className="image-preview-input-title"> Browse</span>
+                      <input onChange={ this.handleImageChange } type="file" accept="'image/*'" name="file" />
+                      {/* rename it */}
+                    </div>
+                    <button type="submit" className="btn btn-labeled btn-primary">
+                      {
+                        uploading
+                        ? <i className="glyphicon glyphicon-refresh" />
+                        : <i className="glyphicon glyphicon-upload" />
+                      }
+                      <span> Upload</span>
+                    </button>
+                  </span>
+                </div>
+                {/* /input-group image-preview [TO HERE]*/}
+              </div>
+            </form>
+          </Col>
+          <Col md={6}>
+            {
+              imagePreviewUrl && 
+              <img className="img-responsive preview" alt={''} src={ imagePreviewUrl } />
+            }
+            
+          </Col>
+        </Row>
+      </Grid>
+
     )
   }
 
+
 }
+
 export default ImageUpload

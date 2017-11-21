@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Main from './components/Main'
+import ImageUpload from './components/ImageUpload'
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <Main />
+        <ImageUpload />
       </div>
     );
   }
