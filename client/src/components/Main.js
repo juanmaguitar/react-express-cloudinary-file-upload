@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
 import axios from 'axios'
 
+import ImageUpload from './ImageUpload'
+
 class Main extends Component {
   constructor(props) {
     super(props)
@@ -15,16 +17,27 @@ class Main extends Component {
     this.setState({ msg })
   }
 
+  // Component method
+  handleFileUpload(e) {
+    e.preventDefault()
+    const [ inputFile ] = e.target
+    console.log(e)
+    console.log(e.target.input)
+  }
+
   render() {
     const { uploading } = this.state
     return (
       <Grid>
+        <ImageUpload />
         <Row>
           <Col md={6}>
-            <div className="panel panel-default">
+            <form onSubmit={ this.handleFileUpload }  className="panel panel-default">
               <div className="panel-heading"><strong>Upload files</strong> <small> </small></div>
               <div className="panel-body">
                 <div className="input-group image-preview">
+                  
+
                   <input type="text" className="form-control image-preview-filename"/>
                   {/* don't give a name === doesn't send on POST/GET */}
                   <span className="input-group-btn">
@@ -50,7 +63,7 @@ class Main extends Component {
                 </div>
                 {/* /input-group image-preview [TO HERE]*/}
               </div>
-            </div>
+            </form>
           </Col>
           <Col md={6}>
             <img className="img-responsive preview" ng-src="{{ imageLink }}" />
