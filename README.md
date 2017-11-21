@@ -1,39 +1,33 @@
-# Angular Cloudinary File Upload
+# React Cloudinary File Upload
 
-This repo contains a demo of uploading an image to a a Cloudinary server from angular
+This repo contains a demo of uploading an image to a a Cloudinary server from a react app
 
-## Versions
+## Launch the App
 
-It contains 4 versions labeled w/ tags:
+**Server (express app)**
 
-### `simple-upload`
-
-This is a simple version of uploading a file to a folder `/uploads` in our server 
-
-### `cloudinary`
-
-This version uploads the file to a folder `/uploads` in our server and then takes this file and uploads it to our Cloudinary _cloud_
-
-Cloudinary will return a url that we can use to show the image and to store in DB
-
-### `bootstrap`
-
-This version improves the UI by using bootstrap to display the elements involved in the upload of the image
-
-### `spinning`
-
-This version add a spinning icon that will be shown rotating while the image is uploading and loaded into our page
-
-## Installation 
-
-You can _download_ this repo by cloning it into your machine
+From the root...
 
 ```
-git clone https://github.com/juanmaguitar/angular-express-cloudinary-file-upload.git
+  npm start
 ```
 
-After this, you can go to a specifig version/tag by doing...
+**Client (react app)**
+
+From the `client` folder...
 
 ```
-git checkout tags/bootstrap
+  cd client
+  npm start
+```
+
+## Configuration
+
+The server app needs the following environement variables from the cloudinary cloud settings
+
+```
+CLOUD_NAME=XXXXXXXXX
+API_KEY=000000000000000
+API_SECRET=XXXX-XXXXXXXX-XXXXXXXX
+UPLOAD_FOLDER=uploads
 ```
