@@ -10,7 +10,11 @@ const upload = multer({
 
 const uploadCloudinary = require('./handlers/uploadCloudinary')
 
-app.use( express.static(path.join(__dirname, '../client')))
+app.use( express.static(path.join(__dirname, '../client/dist')))
+
+app.get('/data', (req, res) => {
+  res.json({ msg: 'testing messages...'})
+})
 
 app.post('/upload', upload.single('file'), uploadCloudinary, (req, res) => {
   const { imageLink } = req
