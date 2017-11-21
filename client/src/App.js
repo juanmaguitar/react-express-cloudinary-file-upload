@@ -16,9 +16,7 @@ class App extends Component {
     data.append('file', file);
     
     const { data: { imageLink } } = await axios.post('/upload',data)      
-
     this.setState({ imageLink })
-  
   }
 
   render() {
