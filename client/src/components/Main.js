@@ -1,7 +1,13 @@
 import React from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
+import PropTypes from 'prop-types';
 
 import ImageUploadForm from './ImageUploadForm'
+
+const propTypes = {
+  imagePreviewUrl: PropTypes.string,
+  uploadFile: PropTypes.func
+}
 
 const Main = props => {
   const { imagePreviewUrl, uploadFile } = props
@@ -21,5 +27,7 @@ const Main = props => {
     </Grid>
   )
 }
+
+Main.propTypes = propTypes
 
 export default Main

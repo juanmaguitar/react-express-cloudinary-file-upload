@@ -1,4 +1,9 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  uploadFile: PropTypes.func
+}
 
 class ImageUploadForm extends Component {
   constructor(props) {
@@ -10,7 +15,7 @@ class ImageUploadForm extends Component {
       uploading: false
     }
   }
-
+  
   handleChange = (e) => {
     e.preventDefault();
 
@@ -35,8 +40,14 @@ class ImageUploadForm extends Component {
     const { uploadFile } = this.props
 
     this.setState({ uploading: true })
-    await uploadFile(file)
-    this.setState({ uploading: false })
+    try {
+      await uploadFile(file)
+      this.setState({ uploading: false })
+    }
+    catch(e) {
+      throw e
+    }
+
   }
 
   render() {
@@ -71,8 +82,8 @@ class ImageUploadForm extends Component {
       </form>
     )
   }
-
-
 }
+
+ImageUploadForm.propTypes = propTypes
 
 export default ImageUploadForm
